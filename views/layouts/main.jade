@@ -1,0 +1,15 @@
+doctype html
+html
+  head
+    block vars
+    block title
+      title Default title
+
+    link(rel='stylesheet', href='styles/themes/default.css')
+    block styles
+  body(data-jspath=jsPath)
+    block content
+
+    script(src='components/jquery/dist/jquery.js')
+    script(src='components/requirejs/require.js')
+    script(src='scripts/boot.js')

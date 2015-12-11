@@ -1,0 +1,54 @@
+@function width($num) {
+  @return ($num * $grid-col-width) + (($num - 1) * $grid-gutter-width);
+}
+
+@function offset($num) {
+  @return ($num * $grid-col-width) + ($num * $grid-gutter-width);
+}
+
+.container {
+  position: relative;
+  width: width($grid-col-count);
+  margin: 0 auto;
+  padding: 0;
+}
+
+.row:not(:first-child) {
+  margin-top: $grid-gutter-width;
+}
+
+@for $i from 1 through $grid-col-count {
+  .col-#{$i} {
+    float: left;
+    display: inline;
+    width: width($i);
+  }
+
+  .col-#{$i}:not(:first-child) {
+    margin: 0 0 0 $grid-gutter-width;
+  }
+
+  .col-span-#{$i} {
+     margin-left: offset($i);
+  }
+}
+
+.row:after, .clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+* html * html .row, * html .clearfix {
+    height: 1%;
+}
+
+.row, .clearfix {
+    display: inline-block;
+}
+
+.row, .clearfix {
+    display: block;
+}

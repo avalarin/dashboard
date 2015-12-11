@@ -1,0 +1,38 @@
+.widget {
+  font-size: 24px;
+  padding: 25px 12px;
+  background: #00897b;
+  height: 240px;
+  text-align: center;
+  position: relative;
+
+  .title {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 12px;
+    text-align: center;
+    font-size:  30px;
+    font-weight: 400;
+  }
+
+  .value {
+    font-size: 42px;
+    font-weight: 700;
+  }
+
+  .more-info, .updated-at {
+    font-size: 16px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .more-info {
+    bottom: 32px;
+  }
+
+  .updated-at {
+    bottom: 12px;
+  }
+
+}

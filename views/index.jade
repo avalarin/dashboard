@@ -1,0 +1,28 @@
+extends ./layouts/main.jade
+
+block vars
+  - var jsPath = "index.js"
+
+block styles
+  link(rel='stylesheet', href='styles/pages/index.css')
+
+block title
+  title Article Title
+
+block content
+  .container
+    .row
+      date-widget.col-1(params='title: "Дата и время", format: "D.M.YYYY<br/>hh:mm"')
+      simple-get-widget.col-2(params='title: "IP", moreInfo: "from http://ipinfo.io/ip", url: "http://ipinfo.io/ip"')
+      server-data-widget.col-1(params='title: "QMS Ошибки", provider: "qms_errorslasthr"')
+      text-widget.col-2(params='text: "2"')
+    .row
+      simple-get-widget.col-2(params='title: "IP", moreInfo: "from http://ipinfo.io/ip", url: "http://ipinfo.io/ip"')
+      text-widget.col-1(params='text: "2"')
+      simple-get-widget.col-2(params='title: "IP", moreInfo: "from http://ipinfo.io/ip", url: "http://ipinfo.io/ip"')
+      date-widget.col-1(params='title: "Дата и время", format: "D.M.YYYY<br/>hh:mm"')
+    .row
+      date-widget.col-1(params='title: "Дата и время", format: "D.M.YYYY<br/>hh:mm"')
+      server-data-widget.col-1(params='title: "QMS Ошибки", provider: "qms_errorslasthr"')
+      simple-get-widget.col-2(params='title: "IP", moreInfo: "from http://ipinfo.io/ip", url: "http://ipinfo.io/ip"')
+      simple-get-widget.col-2(params='title: "IP", moreInfo: "from http://ipinfo.io/ip", url: "http://ipinfo.io/ip"')

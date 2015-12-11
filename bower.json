@@ -1,0 +1,24 @@
+{
+  "name": "rts-build-master",
+  "description": "",
+  "main": [],
+  "dependencies": {
+    "bootstrap": "*",
+    "requirejs": "*",
+    "knockout": "*",
+    "requirejs-text": "*",
+    "moment": "*",
+    "numeraljs": "*"
+  },
+  "devDependencies": { },
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "authors": [
+    "avalarin <avalarin@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [ ]
+}
