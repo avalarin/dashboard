@@ -8,7 +8,8 @@
     "knockout": "*",
     "requirejs-text": "*",
     "moment": "*",
-    "numeraljs": "*"
+    "numeraljs": "*",
+    "chart.js": "git@github.com:nnnick/Chart.js.git#1.0.2"
   },
   "devDependencies": { },
   "moduleType": [

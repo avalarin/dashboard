@@ -1,13 +1,18 @@
 var path = require('path');
 var fs = require('fs');
+var schedule = require('node-schedule');
 
-var providersPath = path.join(__dirname, "providers");
-var providers = {};
+function initializer(context) {
+  var providersPath = path.join(__dirname, "providers");
+  var providers = {};
 
-require("fs").readdirSync(providersPath).forEach(function(file) {
-  var provider = require("./providers/" + file);
-  var name = file.replace(/\.[^/.]+$/, "");
-  providers[name] = provider;
-});
+  require("fs").readdirSync(providersPath).forEach(function(file) {
+    var provider = require("./providers/" + file);
+    var name = file.replace(/\.[^/.]+$/, "");
+    providers[name] = provider(context, schedule);
+  });
 
-module.exports = providers;
+  return providers;
+}
+
+module.exports = initializer;

@@ -1,46 +1,60 @@
 import ko from 'knockout';
-import moment from 'moment';
 
 class TextWidget {
-  constructor(options) {
-    this.title = ko.observable(options.title || 'Без заголовка');
-    this.text = ko.observable(options.text);
-    this.moreInfo = ko.observable(options.moreInfo);
-    this.updatedAt = ko.observable(new Date());
+  constructor(options, element) {
+    options = options || {};
 
-    this.text.subscribe(() => {
-      this.refreshUpdatedAt();
+    this.size = options.size || '1x1';
+    this.title = ko.observable(options.title || 'Без заголовка');
+    this.moreInfo = ko.observable(options.moreInfo);
+    this.source = options.source;
+
+    this.updatedAt = ko.observable();
+    this.value = ko.observable();
+
+    this._onChanged();
+    this.source.changed.subscribe((sender, value) => {
+      this._onChanged();
+    });
+
+    this.color = ko.computed(() => {
+      if (!options.color) return null;
+      if (typeof(options.color) === 'string') {
+        return options.color;
+      }
+      var value = this.value();
+      var lastKey;
+      for (var key in options.color) {
+        if (!options.color.hasOwnProperty(key)) continue;
+        if (!lastKey) {
+          lastKey = key;
+        }
+        var kv = parseFloat(key);
+        if (kv > value) break;
+        lastKey = key;
+      }
+      return lastKey ? options.color[lastKey] : null;
+    });
+
+    element.className += `tile tile-${this.size}`;
+    element.onclick = () => this.source.refresh();
+  }
+
+  _onChanged() {
+    this.updatedAt(this.source.updatedAt);
+    this.value(this.source.value);
+  }
+
+  static register(name, wclass, template) {
+    ko.components.register(`${name}-widget`, {
+      viewModel: {
+        createViewModel: (params, componentInfo) => new wclass(params, componentInfo.element)
+      },
+      template: { require: `requiretext!../widgets/${template}` }
     });
   }
-
-  refreshUpdatedAt() {
-    this.updatedAt(new Date());
-  }
 }
 
-class DateWidget extends TextWidget {
-  constructor(options) {
-    super(options);
+TextWidget.register('text', TextWidget, 'text.html');
 
-    this.format = options.format || 'LLL';
-
-    this.refresh()
-    setInterval(() => this.refresh(), 1000);
-  }
-
-  refresh() {
-    this.text(moment(new Date()).format(this.format));
-  }
-}
-
-ko.components.register('text-widget', {
-  viewModel: params => new TextWidget(params),
-  template: { require: 'requiretext!../widgets/text.html' }
-});
-
-ko.components.register('date-widget', {
-  viewModel: params => new DateWidget(params),
-  template: { require: 'requiretext!../widgets/text.html' }
-});
-
-export { TextWidget, DateWidget };
+export default TextWidget;

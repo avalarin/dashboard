@@ -1,0 +1,22 @@
+extends ./layouts/main.jade
+
+block vars
+  - var jsPath = "dashboard.js"
+
+block title
+  title Dashboard
+
+block content
+  .tiles-container
+    .tiles-group.tile-3x2
+      date-widget(params='title: "Дата и время",              color: "red",   format: "D.M.YYYY<br/>hh:mm",          source: new DateDataSource()')
+      text-widget(params='title: "IP",           size: "2x1", color: "blue",  moreInfo: "from http://ipinfo.io/ip",  source: new SimpleGetDataSource({ url: "http://ipinfo.io/ip" })')
+      date-widget(params='title: "Дата и время",              color: "red",   format: "D.M.YYYY<br/>hh:mm",          source: new DateDataSource()')
+      text-widget(params='title: "IP",           size: "2x1", color: "blue",  moreInfo: "from http://ipinfo.io/ip",  source: new SimpleGetDataSource({ url: "http://ipinfo.io/ip" })')
+    chart-widget(params='title: "Секунды",      size: "3x2", color: { "40": "green", "45": "orange", "50": "red" }, source: new ServerDataSource({ provider: "seconds" })')
+    .tiles-group.tile-3x2
+      date-widget(params='title: "Дата и время",              color: "red",   format: "D.M.YYYY<br/>hh:mm",          source: new DateDataSource()')
+      text-widget(params='title: "IP",           size: "2x1", color: "blue",  moreInfo: "from http://ipinfo.io/ip",  source: new SimpleGetDataSource({ url: "http://ipinfo.io/ip" })')
+      date-widget(params='title: "Дата и время",              color: "red",   format: "D.M.YYYY<br/>hh:mm",          source: new DateDataSource()')
+      text-widget(params='title: "IP",           size: "2x1", color: "blue",  moreInfo: "from http://ipinfo.io/ip",  source: new SimpleGetDataSource({ url: "http://ipinfo.io/ip" })')
+    chart-widget(params='title: "Секунды",      size: "3x2", color: { "40": "green", "45": "orange", "50": "red" }, source: new ServerDataSource({ provider: "seconds" })')

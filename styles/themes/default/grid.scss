@@ -2,6 +2,10 @@
   @return ($num * $grid-col-width) + (($num - 1) * $grid-gutter-width);
 }
 
+@function height($num) {
+  @return ($num * $grid-row-height) + (($num - 1) * $grid-gutter-width);
+}
+
 @function offset($num) {
   @return ($num * $grid-col-width) + ($num * $grid-gutter-width);
 }
@@ -11,6 +15,10 @@
   width: width($grid-col-count);
   margin: 0 auto;
   padding: 0;
+}
+
+.row {
+  height: $grid-row-height;
 }
 
 .row:not(:first-child) {
@@ -26,6 +34,10 @@
 
   .col-#{$i}:not(:first-child) {
     margin: 0 0 0 $grid-gutter-width;
+  }
+
+  .row-#{$i} {
+    height: height($i);
   }
 
   .col-span-#{$i} {

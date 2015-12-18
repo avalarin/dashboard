@@ -7,7 +7,9 @@
   "contributors": [],
   "dependencies": {
     "express": "*",
-    "request": "*"
+    "request": "*",
+    "node-schedule": "*",
+    "ws": "*"
   },
   "devDependencies": {
     "gulp": "*",

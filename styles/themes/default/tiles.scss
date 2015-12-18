@@ -1,0 +1,42 @@
+$tiles-cols-count: 6;
+$tiles-rows-count: 4;
+$tile-width: 300px;
+$tile-height: 260px;
+$tile-vertical-margin: 10px;
+$tile-horizontal-margin: 10px;
+
+@function compute($num, $size, $padding) {
+  @return ($num * $size) + (($num - 1) * $padding);
+}
+
+
+.tiles-container {
+  margin: ($tile-vertical-margin * -1) auto 0 auto;
+  width: compute($tiles-cols-count, $tile-width, $tile-horizontal-margin) + $tile-horizontal-margin;
+}
+
+.tile {
+  float: left;
+  margin-top: $tile-vertical-margin / 2;
+  margin-bottom: $tile-vertical-margin / 2;
+  margin-left: $tile-horizontal-margin / 2;
+  margin-right: $tile-horizontal-margin / 2;
+}
+
+.tiles-group {
+  float: left;
+}
+
+@for $x from 1 through $tiles-cols-count {
+  @for $y from 1 through $tiles-rows-count {
+    .tile.tile-#{$x}x#{$y} {
+      width: compute($x, $tile-width, $tile-horizontal-margin);
+      height: compute($y, $tile-height, $tile-vertical-margin);
+    }
+
+    .tiles-group.tile-#{$x}x#{$y} {
+      width: compute($x, $tile-width, $tile-horizontal-margin) + $tile-horizontal-margin;
+      height: compute($y, $tile-height, $tile-vertical-margin) + $tile-vertical-margin;
+    }
+  }
+}

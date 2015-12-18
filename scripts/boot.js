@@ -5,7 +5,8 @@ require.config({
     'requiretext': '../components/requirejs-text/text',
     'moment': '../components/moment/min/moment.min',
     'moment-ru': '../components/moment/locale/ru',
-    'numeral': '../components/numeraljs/min/numeral.min'
+    'numeral': '../components/numeraljs/min/numeral.min',
+    'chart': '../components/chart.js/chart.min'
   }
 });
 
