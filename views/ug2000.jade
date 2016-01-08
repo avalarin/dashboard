@@ -1,0 +1,13 @@
+extends ./layouts/main.jade
+
+block vars
+  - var jsPath = "ug2000.js"
+
+block title
+  title УГ2000
+
+block styles
+  link(rel='stylesheet', href='styles/themes/default.css')
+
+block content
+  canvas#canvas(style="position: fixed; overflow-y: scroll; width: 100%; margin: 0;")
