@@ -1,19 +1,12 @@
 class UafClient {
   constructor(dataClient, options) {
-    options = options || {};
-
-    if (!options.appId) {
-      throw Error("[appId] is required");
-    }
-
-    this.appId = options.appId;
     this.dataClient = dataClient;
   }
 
-  connectToApp() {
-    this.dataClient.send("uaf.connectToApp", { appId: this.appId }, response => {
+  connectToApp(appId) {
+    this.dataClient.send("uaf.connectToApp", { appId: appId }, response => {
       if (response.success) {
-        this.onApplicationRegistred();
+        this.onApplicationConnected();
 
         this.dataClient.subscribe("uaf.message", message => {
           this.onApplicationMessage(message.data);
@@ -21,13 +14,13 @@ class UafClient {
       }
     });
   }
-  
+
   onApplicationConnected() { }
 
   onApplicationMessage(data) {  }
 
   sendToApp(data) {
-    this.dataClient.send("uaf.messageToApp", { appId: clientId, data: data  });
+    this.dataClient.send("uaf.messageToApp", { data: data });
   }
 }
 

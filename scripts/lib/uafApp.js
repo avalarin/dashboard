@@ -3,8 +3,12 @@ class UafApp {
     this.dataClient = dataClient;
   }
 
-  registerApp(name) {
-    this.dataClient.send("uaf.registerApp", { name: name }, response => {
+  registerApp(name, clientPage) {
+    var options = {
+      name: name,
+      clientPage: clientPage
+    };
+    this.dataClient.send("uaf.registerApp", options, response => {
       if (response.success) {
         this.onApplicationRegistred();
 

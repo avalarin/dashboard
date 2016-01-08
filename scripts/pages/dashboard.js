@@ -26,7 +26,7 @@ class DashboardApp extends UafApp {
   }
 
   begin() {
-    this.registerApp("Dashboard");
+    this.registerApp('Dashboard', 'dashboard.client.html');
   }
 
   onApplicationRegistred() {
@@ -42,7 +42,7 @@ class DashboardApp extends UafApp {
   }
 }
 
-var client = new DataClient("ws://localhost:3000");
+var client = new DataClient('ws://localhost:3000');
 DataClient.default = client;
 
 var app = new DashboardApp(client);

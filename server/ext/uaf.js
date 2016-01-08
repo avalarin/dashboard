@@ -3,6 +3,23 @@ module.exports = function(context) {
   var apps = {};
   var clients = {};
 
+  context.express.get("/connect/:appId", function (req, res) {
+    var appId = req.params.appId;
+    var app = apps[appId];
+    if (!app) {
+      res.send("Application not found");
+      return;
+    }
+
+    if (!app.clientPage) {
+      res.send("Application found: " + app.name);
+      return;
+    }
+
+    res.redirect("/" + app.clientPage + "?appid=" + appId);
+  });
+
+
   context.registerHandler("uaf.registerApp", catchExceptions(registerApp));
 
   context.registerHandler("uaf.connectToApp", catchExceptions(connectToApp));
@@ -31,7 +48,8 @@ module.exports = function(context) {
     var app = {
       id: client.id,
       name: message.name,
-      appWs: client.ws,
+      clientPage: message.clientPage,
+      context: client,
       clients: { }
     };
 
@@ -48,44 +66,43 @@ module.exports = function(context) {
     }
 
     var app = apps[message.appId];
-
     if (!app) {
       console.error('Application ' + message.appId + ' is not found');
       throw "appNotFound";
     }
 
-    var client = {
-      clientWs: client.ws,
+    var uafClient = {
+      context: client,
       appId: app.id,
       clientId: client.id
     }
 
-    app.clients[client.id] = client;
-    clients[client.ws] = client;
+    app.clients[client.id] = uafClient;
+    clients[client.id] = uafClient;
     app.connected = true;
 
     console.log('Client ' + client.id + ' connected to the app ' + app.name + ' ' + app.id);
 
-    context.dataGate.send("uaf.clientConnected", client, { remoteClientId: client.id });
+    context.dataGate.send("uaf.clientConnected", app.context, { remoteClientId: client.id });
     context.dataGate.sendResponse(message, client, { success: true });
   }
 
   function messageToApp(client, message) {
-    var client = clients[client.id];
+    var uafClient = clients[client.id];
 
-    if (!client) {
+    if (!uafClient) {
       console.error('Client is not registred');
       throw "clientNotRegistred";
     }
 
-    var app = apps[message.appId];
+    var app = apps[uafClient.appId];
     if (!app) {
-      console.error('Application ' + client.appId + ' is not found');
+      console.error('Application ' + uafClient.appId + ' is not found');
       context.dataGate.sendResponse(message, client, { error: "appNotFound" });
       return;
     }
 
-    context.dataGate.send("uaf.message", client, { appId: client.id, data: message.data });
+    context.dataGate.send("uaf.message", app.context, { remoteClientId: client.id, data: message.data });
   }
 
   function messageToClient(client, message) {
@@ -96,13 +113,13 @@ module.exports = function(context) {
       throw "appNotRegistred";
     }
 
-    var client = app.clients[message.remoteClientId];
+    var uafClient = app.clients[message.remoteClientId];
 
-    if (!client) {
+    if (!uafClient) {
       console.error('Client ' + message.remoteClientId + ' is not found');
       throw "clientNotFound";
     }
 
-    context.dataGate.send("uaf.message", client, { appId: client.id, data: message.data });
+    context.dataGate.send("uaf.message", uafClient.context, { appId: client.id, data: message.data });
   }
 };

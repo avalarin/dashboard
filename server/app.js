@@ -4,12 +4,13 @@ var server = http.createServer();
 var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({ server: server });
 
+var app = express();
+
 var context = require("./context.js")({
+  express: app,
   wss: wss
 });
 context.loadExtensions();
-
-var app = express();
 
 app.get("/", function (req, res) {
   res.send("Hello World!");
