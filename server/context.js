@@ -28,9 +28,7 @@ module.exports = function(base) {
 
   function registerHandler(filter, func) {
     context.handlers.push({
-      filter: function(key) {
-        return filter.test(key);
-      },
+      filter: createHandlerFilter(filter),
       func: func
     });
   }
@@ -50,6 +48,13 @@ module.exports = function(base) {
       }
     }
     return null;
+  }
+
+  function createHandlerFilter(filter) {
+    if (filter instanceof RegExp) {
+      return function(key) { return filter.test(key); };
+    }
+    return function(key) { return key === filter };
   }
 
   return context;
