@@ -1,7 +1,9 @@
 import ko from 'knockout';
 import BaseDataSource from 'data-sources/base';
+import DataClient from 'lib/dataClient';
 
 class SimpleGetDataSource extends BaseDataSource {
+
   constructor(options) {
     super(options);
     this.url = options.url;
@@ -10,14 +12,9 @@ class SimpleGetDataSource extends BaseDataSource {
   }
 
   refresh() {
-    // $.ajax({
-    //   url: '/proxy',
-    //   data: { url: this.url },
-    //   success: data => {
-    //     this.value = data;
-    //   }
-    // });
-    this.value = (new Date());
+    DataClient.default.send('server.proxy', { url: this.url }, (message) => {
+      this.value = message.data;
+    });
   }
 }
 

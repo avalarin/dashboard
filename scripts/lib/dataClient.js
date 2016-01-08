@@ -6,6 +6,10 @@ class DataClient {
     this.connected = new Event(this, 'connected');
     this.clientId = null;
     this._socket = new WebSocket(url);
+
+    this._lastId = 0;
+    this._waiters = { };
+
     console.log('Connecting to', url);
 
     this._socket.onmessage = event => {
@@ -29,16 +33,33 @@ class DataClient {
   }
 
   _receive(message) {
+    if (typeof(message.response) !== "undefined") {
+      var waiter = this._waiters[message.response];
+      if (waiter) {
+        waiter(message);
+        delete this._waiters[message.response];
+      }
+      return;
+    }
+
     var ev = this.events[message.key];
     if (ev) ev.trigger(message);
   }
 
-  send(key, message) {
+  send(key, message, callback) {
     message = message || {};
+    message.id = (++this._lastId);
     message.key = key;
     var messageStr = JSON.stringify(message);
-    console.log('Send to the server', messageStr);
-    this._socket.send(messageStr);
+
+    if (callback) {
+      this._waiters[message.id] = callback;
+    }
+
+    this.mustBeConnected(() => {
+      console.log('Send to the server', messageStr);
+      this._socket.send(messageStr);
+    });
   }
 
   subscribe(key, callback) {

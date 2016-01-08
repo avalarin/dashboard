@@ -50,6 +50,11 @@ function initializer(context) {
         return;
     }
 
+    var handler = context.findHandler(message.key);
+    if (handler) {
+      handler(client, message);
+    }
+
     // getSubscribers(message.key).forEach(function(subscriber) {
     //   // clients messages sends only to local subscribers
     //   if (subscriber.callback) {
@@ -89,6 +94,12 @@ function initializer(context) {
     // console.info('Send message to ' + client.id + ' ' + messageStr);
   }
 
+  function sendResponse(original, client, message) {
+    var response = { response: original.id };
+    extend(response, message);
+    send(original.key, client, response);
+  }
+
   function publishData(key, data) {
     getSubscribers(key).forEach(function(subscriber) {
       send(key, subscriber.client, { data: data });
@@ -96,9 +107,9 @@ function initializer(context) {
   }
 
   function createMessage(key, client, message) {
-    message = message || {};
-    extend(message, { key: key, clientId: client.id });
-    return message;
+    var newMessage = { key: key, clientId: client.id };
+    extend(newMessage, message);
+    return newMessage;
   }
 
   function subscribe(key, client) {
@@ -139,7 +150,9 @@ function initializer(context) {
 
   return {
     publishData: publishData,
-    subscribe: subscribe
+    subscribe: subscribe,
+    send: send,
+    sendResponse: sendResponse
   }
 }
 

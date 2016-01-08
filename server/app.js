@@ -4,12 +4,10 @@ var server = http.createServer();
 var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({ server: server });
 
-var context = {
+var context = require("./context.js")({
   wss: wss
-};
-
-context.dataGate = require("./lib/dataGate.js")(context);
-context.providers = require("./providers.js")(context);
+});
+context.loadExtensions();
 
 var app = express();
 

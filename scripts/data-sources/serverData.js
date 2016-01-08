@@ -16,9 +16,7 @@ class ServerDataSource extends BaseDataSource {
   }
 
   refresh() {
-    DataClient.default.mustBeConnected(() => {
-      DataClient.default.send('server.get', { tkey: this.key });
-    });
+    DataClient.default.send('server.get', { tkey: this.key });
   }
 }
 
