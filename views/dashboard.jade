@@ -9,7 +9,7 @@ block title
 block content
   .tiles-container
     .tiles-group.tile-3x2
-      text-widget(params='title: "ID клиента",                color: "red",                                          source: new ClientIdDataSource()')
+      qrcode-widget(params='title: "ID клиента",              color: "blue",  format: function(v) { return "http://" + location.hostname + ":" + location.port + "/connect/" + v; }, source: new ClientIdDataSource()')
       text-widget(params='title: "IP",           size: "2x1", color: "blue",  moreInfo: "from http://ipinfo.io/ip",  source: new SimpleGetDataSource({ url: "http://ipinfo.io/ip" })')
       date-widget(params='title: "Дата и время",              color: "red",   format: "D.M.YYYY<br/>hh:mm",          source: new DateDataSource()')
       text-widget(params='title: "IP",           size: "2x1", color: "blue",  moreInfo: "from http://ipinfo.io/ip",  source: new SimpleGetDataSource({ url: "http://ipinfo.io/ip" })')

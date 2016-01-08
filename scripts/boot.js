@@ -6,7 +6,9 @@ require.config({
     'moment': '../components/moment/min/moment.min',
     'moment-ru': '../components/moment/locale/ru',
     'numeral': '../components/numeraljs/min/numeral.min',
-    'chart': '../components/chart.js/chart.min'
+    'chart': '../components/chart.js/chart.min',
+    'paper': '../components/paper/dist/paper-full.min',
+    'qrcode': '../components/qrcode-js/qrcode'
   }
 });
 

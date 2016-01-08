@@ -4,6 +4,7 @@ import DataClient from 'lib/dataClient';
 import 'widgets/text';
 import 'widgets/date';
 import 'widgets/chart';
+import 'widgets/qrcode';
 
 import BaseDataSource from 'data-sources/base';
 import DateDataSource from 'data-sources/date';
