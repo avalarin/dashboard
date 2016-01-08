@@ -2,6 +2,8 @@ import DataClient from 'lib/dataClient';
 import UafClient from 'lib/uafClient';
 import utils from 'lib/utils';
 
+try {
+
 class DashboardClient extends UafClient {
   constructor(dataClient, appId) {
     super(dataClient);
@@ -15,8 +17,18 @@ class DashboardClient extends UafClient {
   onApplicationConnected() {
     console.log('Application connected');
 
-    document.getElementById('test').addEventListener("click", () => {
-      this.sendToApp('test');
+    document.getElementById('sendToast').addEventListener("click", () => {
+      var message = document.getElementById('message').value;
+      this.sendToApp({ command: 'showToast', message: message });
+    });
+
+    document.getElementById('sendStatic').addEventListener("click", () => {
+      var message = document.getElementById('message').value;
+      this.sendToApp({ command: 'showStatic', message: message });
+    });
+
+    document.getElementById('reload').addEventListener("click", () => {
+      this.sendToApp({ command: 'reloadPage' });
     });
   }
 
@@ -25,13 +37,18 @@ class DashboardClient extends UafClient {
   }
 }
 
-var client = new DataClient('ws://localhost:3000');
+var client = new DataClient();
 DataClient.default = client;
 
 var qs = utils.parseQueryString();
 if (!qs.appId) {
-  throw "[appId] quesry string parameter is required";
+  throw "[appId] query string parameter is required";
 }
 
 var client = new DashboardClient(client, qs.appId);
 client.begin();
+
+}
+catch(err) {
+  alert(err.toString());
+}

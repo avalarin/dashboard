@@ -1,5 +1,6 @@
 import ko from 'knockout';
 import DataClient from 'lib/dataClient';
+import toastr from 'toastr';
 
 import 'widgets/text';
 import 'widgets/date';
@@ -35,14 +36,22 @@ class DashboardApp extends UafApp {
 
   onClientConnected(clientId) {
     console.log('Client ' + clientId + ' connected');
+    toastr.info('Client ' + clientId + ' connected', 'System');
   }
 
   onClientMessage(clientId, data) {
-    console.log('Message from ' + clientId + ': ' + data);
+    console.log('Message from ' + clientId, data);
+    if (data.command == 'showToast') {
+      toastr.info(data.message, 'Message');
+    } else if (data.command == 'showStatic') {
+      this.dataClient.local('page.staticMessage', { data: data.message });
+    } else if (data.command == 'reloadPage') {
+      location.reload();
+    }
   }
 }
 
-var client = new DataClient('ws://localhost:3000');
+var client = new DataClient();
 DataClient.default = client;
 
 var app = new DashboardApp(client);

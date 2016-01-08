@@ -3,6 +3,7 @@
   "description": "",
   "main": [],
   "dependencies": {
+    "jquery": "*",
     "bootstrap": "*",
     "requirejs": "*",
     "knockout": "*",
@@ -11,7 +12,8 @@
     "numeraljs": "*",
     "chart.js": "git@github.com:nnnick/Chart.js.git#1.0.2",
     "paper": "*",
-    "qrcode-js": "*"
+    "qrcode-js": "*",
+    "toastr": "*"
   },
   "devDependencies": { },
   "moduleType": [

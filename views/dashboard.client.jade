@@ -6,5 +6,26 @@ block vars
 block title
   title Dashboard Client
 
+block head
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+
+block styles
+  link(rel='stylesheet', href='components/bootstrap/dist/css/bootstrap.min.css')
+
 block content
-  button#test Тест
+  .container-fluid
+    h1 Dashboard Control
+    h2 Navigation
+    .btn-toolbar
+      a.btn.btn-default#goPrev(href='javascript:') Previous page
+      a.btn.btn-default#goNext(href='javascript:') Next page
+    h2 Send message
+    form
+      .form-group
+        textarea.form-control#message(placeholder="Message")
+      .btn-toolbar
+        a.btn.btn-default#sendToast(href='javascript:') Send toast
+        a.btn.btn-default#sendStatic(href='javascript:') Send static
+    h2 Page
+    .btn-toolbar
+      a.btn.btn-warning#reload(href='javascript:') Reload page

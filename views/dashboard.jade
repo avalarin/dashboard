@@ -13,7 +13,7 @@ block content
   .tiles-container
     .tiles-group.tile-3x2
       qrcode-widget(params='title: "ID клиента",              color: "blue",  format: function(v) { return "http://" + location.hostname + ":" + location.port + "/connect/" + v; }, source: new ClientIdDataSource()')
-      text-widget(params='title: "IP",           size: "2x1", color: "blue",  moreInfo: "from http://ipinfo.io/ip",  source: new SimpleGetDataSource({ url: "http://ipinfo.io/ip" })')
+      text-widget(params='title: "Текст",           size: "2x1", color: "blue"                                      ,  source: new ServerDataSource({ key: "page.staticMessage" })')
       date-widget(params='title: "Дата и время",              color: "red",   format: "DD.MM.YYYY<br/>hh:mm",          source: new DateDataSource()')
       text-widget(params='title: "IP",           size: "2x1", color: "blue",  moreInfo: "from http://ipinfo.io/ip",  source: new SimpleGetDataSource({ url: "http://ipinfo.io/ip" })')
     chart-widget(params='title: "Секунды",      size: "3x2", color: { "40": "green", "45": "orange", "50": "red" }, source: new ServerDataSource({ key: "seconds.data" })')

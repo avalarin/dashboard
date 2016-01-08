@@ -5,6 +5,11 @@ class DataClient {
     this.events = { };
     this.connected = new Event(this, 'connected');
     this.clientId = null;
+
+    if (!url) {
+      url = 'ws://' + location.hostname + ":" + location.port;
+    }
+
     this._socket = new WebSocket(url);
 
     this._lastId = 0;
@@ -61,6 +66,12 @@ class DataClient {
       console.log('Send to the server', messageStr);
       this._socket.send(messageStr);
     });
+  }
+
+  local(key, message) {
+    message.key = key;
+    var ev = this.events[message.key];
+    if (ev) ev.trigger(message);
   }
 
   subscribe(key, callback) {

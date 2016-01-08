@@ -16,7 +16,7 @@ module.exports = function(context) {
       return;
     }
 
-    res.redirect("/" + app.clientPage + "?appid=" + appId);
+    res.redirect("/" + app.clientPage + "?appId=" + appId);
   });
 
 
