@@ -9,38 +9,42 @@ import BaseDataSource from 'data-sources/base';
 import DateDataSource from 'data-sources/date';
 import ServerDataSource from 'data-sources/serverData';
 import SimpleGetDataSource from 'data-sources/simpleGet';
+import ClientIdDataSource from 'data-sources/clientId';
+
+import UafApp from 'lib/uafApp';
 
 window.BaseDataSource = BaseDataSource;
 window.DateDataSource = DateDataSource;
 window.ServerDataSource = ServerDataSource;
 window.SimpleGetDataSource = SimpleGetDataSource;
+window.ClientIdDataSource = ClientIdDataSource;
 
-// var tiles = [
-//   [
-//     { widget: DateWidget, title: "Дата и время", size: "1x1", color: "red", format: "D.M.YYYY<br/>hh:mm", source: new DateDataSource() },
-//     { widget: TextWidget, title: "IP", size: "2x1", color: "blue", moreInfo: "from http://ipinfo.io/ip", source: new SimpleGetDataSource({ url: "http://ipinfo.io/ip" }) },
-//     { widget: DateWidget, title: "Дата и время", size: "1x1", color: "red", format: "D.M.YYYY<br/>hh:mm", source: new DateDataSource() },
-//     { widget: TextWidget, title: "IP", size: "2x1", color: "blue", moreInfo: "from http://ipinfo.io/ip", source: new SimpleGetDataSource({ url: "http://ipinfo.io/ip" }) },
-//   ],
-//   { widget: ChartWidget, title: "Секунды", size: "3x2", color: { "40": "green", "45": "orange", "50": "red" }, source: new ServerDataSource({ provider: "seconds" }) },
-//   [
-//     { widget: DateWidget, title: "Дата и время", size: "1x1", color: "red", format: "D.M.YYYY<br/>hh:mm", source: new DateDataSource() },
-//     { widget: TextWidget, title: "IP", size: "2x1", color: "blue", moreInfo: "from http://ipinfo.io/ip", source: new SimpleGetDataSource({ url: "http://ipinfo.io/ip" }) },
-//     { widget: DateWidget, title: "Дата и время", size: "1x1", color: "red", format: "D.M.YYYY<br/>hh:mm", source: new DateDataSource() },
-//     { widget: TextWidget, title: "IP", size: "2x1", color: "blue", moreInfo: "from http://ipinfo.io/ip", source: new SimpleGetDataSource({ url: "http://ipinfo.io/ip" }) },
-//   ],
-//   { widget: ChartWidget, title: "Секунды", size: "3x2", color: { "40": "green", "45": "orange", "50": "red" }, source: new ServerDataSource({ provider: "seconds" }) }
-//
-// ]
-//
-// function processTiles(tiles) {
-//
-//   tiles.fo
-//
-//
-// }
+class DashboardApp extends UafApp {
+  constructor(dataClient, options) {
+    super(dataClient, options);
+  }
+
+  begin() {
+    this.registerApp("Dashboard");
+  }
+
+  onApplicationRegistred() {
+    console.log('Application registred');
+  }
+
+  onClientConnected(clientId) {
+    console.log('Client ' + clientId + ' connected');
+  }
+
+  onClientMessage(clientId, data) {
+    console.log('Message from ' + clientId + ': ' + data);
+  }
+}
 
 var client = new DataClient("ws://localhost:3000");
 DataClient.default = client;
+
+var app = new DashboardApp(client);
+app.begin();
 
 ko.applyBindings();

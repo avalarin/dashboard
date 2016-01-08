@@ -18,6 +18,7 @@ class DataClient {
 
       if (message.key == 'server.connected') {
         console.log('Server connected, client id', message.clientId);
+        this.clientId = message.clientId;
         this._isConnected = true;
         this.connected.trigger();
         return;
