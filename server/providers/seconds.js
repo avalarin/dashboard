@@ -1,17 +1,16 @@
+var schedule = require('node-schedule');
+
 function getSeconds() {
   var date = new Date();
   return date.getSeconds().toString();
 }
 
-function provider(context, schedule) {
-  schedule.scheduleJob('*/5 * * * * *', function() {
+function initialize(context) {
+  schedule.scheduleJob('*/1 * * * * *', function() {
     var seconds = getSeconds();
-    context.dataGate.publishData('seconds', seconds);
+    context.dataGate.publishData('seconds.data', seconds);
   });
-  context.dataGate.subscribeData('seconds', function(client, data) {
-    var seconds = getSeconds();
-    client.publishData('seconds', seconds);
-  });
+  context.register('seconds.data', getSeconds);
 }
 
-module.exports = provider;
+module.exports = initialize;

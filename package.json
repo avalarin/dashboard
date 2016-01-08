@@ -9,7 +9,9 @@
     "express": "*",
     "request": "*",
     "node-schedule": "*",
-    "ws": "*"
+    "ws": "*",
+    "randomstring": "*",
+    "extend": "*"
   },
   "devDependencies": {
     "gulp": "*",

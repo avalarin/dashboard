@@ -1,18 +1,24 @@
 var path = require('path');
 var fs = require('fs');
-var schedule = require('node-schedule');
+var extend = require("extend");
+var fs = require("fs");
 
 function initializer(context) {
   var providersPath = path.join(__dirname, "providers");
   var providers = {};
+  var pcontext = {
+    register: function(key, func) {
+      providers[key] = func;
+    }
+  };
+  extend(pcontext, context);
 
-  require("fs").readdirSync(providersPath).forEach(function(file) {
-    var provider = require("./providers/" + file);
-    var name = file.replace(/\.[^/.]+$/, "");
-    providers[name] = provider(context, schedule);
+  fs.readdirSync(providersPath).forEach(function(file) {
+    require("./providers/" + file)(pcontext);
   });
 
   return providers;
 }
+
 
 module.exports = initializer;

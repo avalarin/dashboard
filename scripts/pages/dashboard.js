@@ -1,5 +1,5 @@
 import ko from 'knockout';
-import dataGate from 'lib/dataGate';
+import DataClient from 'lib/dataClient';
 
 import 'widgets/text';
 import 'widgets/date';
@@ -40,6 +40,7 @@ window.SimpleGetDataSource = SimpleGetDataSource;
 //
 // }
 
-dataGate.initialize("ws://localhost:3000");
+var client = new DataClient("ws://localhost:3000");
+DataClient.default = client;
 
 ko.applyBindings();

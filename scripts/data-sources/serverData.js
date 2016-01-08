@@ -1,28 +1,24 @@
 import ko from 'knockout';
 import BaseDataSource from 'data-sources/base';
-import dataGate from 'lib/dataGate';
+import DataClient from 'lib/dataClient';
 
 class ServerDataSource extends BaseDataSource {
 
   constructor(options) {
     super(options);
-    this.provider = options.provider;
+    this.key = options.key;
 
     this.refresh();
-    dataGate.subscribe(this.provider, data => {
-      this.value = data;
+
+    DataClient.default.subscribe(this.key, message => {
+      this.value = message.data;
     });
   }
 
   refresh() {
-    if (!dataGate.isConnected) {
-        dataGate.connected.subscribe(() => {
-          console.log('connected, refresh data')
-          dataGate.toDataProvider(this.provider);
-        });
-    } else {
-      dataGate.toDataProvider(this.provider);
-    }
+    DataClient.default.mustBeConnected(() => {
+      DataClient.default.send('server.get', { tkey: this.key });
+    });
   }
 }
 
