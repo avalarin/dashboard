@@ -1,11 +1,19 @@
-Подготовка среды:
+# dashboard
+
+# Требования
+* cygwin (только под Windows)
+* nodejs, npm
+* gulp-cli
+* bower-cli
+
+# Начало работы
+* Инициализация
 ```
-# Установка утилит gulp и bower, -g значит установить глобально, а не для текущего проекта
-npm install -g gulp-cli bower
-# Установка зависимостей для текущего проекта, зависимости устанавливаются в project.json
+git clone git@github.com:avalarin/dashboard.git
+cd dashboard
 npm install --save-dev
-# Установка js библиотек по списку из bower.json
 bower install
-# Запуск сборки и запуск отслеживания изменений
-gulp & gulp watch
 ```
+* Запуск сборки: `gulp`
+* Запуск сборки и автоматического отслеживания изменений: `gulp && gulp watch`
+* Запуск сервера: `node server/app.js`. Cервер работает на 3000 порту
