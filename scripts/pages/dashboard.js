@@ -1,6 +1,7 @@
 import ko from 'knockout';
 import DataClient from 'lib/dataClient';
 import toastr from 'toastr';
+import utils from 'lib/utils';
 
 import 'widgets/text';
 import 'widgets/date';
@@ -46,7 +47,10 @@ class DashboardApp extends UafApp {
     } else if (data.command == 'showStatic') {
       this.dataClient.local('page.staticMessage', { data: data.message });
     } else if (data.command == 'reloadPage') {
-      location.reload();
+      this.requestReloadCode(reloadCode => {
+        var newLocation = location.origin + location.pathname + '?reloadCode=' + reloadCode;
+        location.href = newLocation;
+      });
     }
   }
 }
@@ -56,5 +60,10 @@ DataClient.default = client;
 
 var app = new DashboardApp(client);
 app.begin();
+
+var qs = utils.parseQueryString();
+if (qs.reloadCode) {
+  app.restoreClients(qs.reloadCode);
+}
 
 ko.applyBindings();

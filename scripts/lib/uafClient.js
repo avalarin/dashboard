@@ -11,6 +11,10 @@ class UafClient {
         this.dataClient.subscribe("uaf.message", message => {
           this.onApplicationMessage(message.data);
         });
+
+        this.dataClient.subscribe("uaf.newAppId", message => {
+          this.onNewAppId(message.newAppId);
+        });
       }
     });
   }
@@ -18,6 +22,10 @@ class UafClient {
   onApplicationConnected() { }
 
   onApplicationMessage(data) {  }
+
+  onNewAppId(newAppId) {
+    location.href = '/connect/' + newAppId;
+  }
 
   sendToApp(data) {
     this.dataClient.send("uaf.messageToApp", { data: data });

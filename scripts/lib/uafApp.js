@@ -28,6 +28,17 @@ class UafApp {
 
   onClientMessage(clientId, data) {  }
 
+  requestReloadCode(callback) {
+    this.dataClient.send('uaf.reloadApp', { }, (message) => {
+      var reloadCode = message.reloadCode;
+      callback(reloadCode);
+    });
+  }
+
+  restoreClients(reloadCode) {
+    this.dataClient.send('uaf.restoreClients', { reloadCode: reloadCode });
+  }
+
   sendToClient(clientId, data) {
     this.dataClient.send("uaf.messageToClient", { remoteClientId: clientId, data: data  });
   }

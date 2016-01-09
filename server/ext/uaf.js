@@ -1,7 +1,10 @@
 // uaf - ultra apps framework
+var randomstring = require("randomstring");
+
 module.exports = function(context) {
   var apps = {};
   var clients = {};
+  var reloadCodes = {};
 
   context.express.get("/connect/:appId", function (req, res) {
     var appId = req.params.appId;
@@ -27,6 +30,10 @@ module.exports = function(context) {
   context.registerHandler("uaf.messageToApp", catchExceptions(messageToApp));
 
   context.registerHandler("uaf.messageToClient", catchExceptions(messageToClient));
+
+  context.registerHandler("uaf.reloadApp", catchExceptions(reloadApp));
+
+  context.registerHandler("uaf.restoreClients", catchExceptions(restoreClients));
 
   function catchExceptions(func) {
     return function(client, message) {
@@ -55,7 +62,7 @@ module.exports = function(context) {
 
     apps[client.id] = app;
 
-    console.log('Client ' + client.id + " created the " + message.name + "app");
+    console.log('Client ' + client.id + " created the " + message.name + " app");
     context.dataGate.sendResponse(message, client, { success: true });
   }
 
@@ -121,5 +128,39 @@ module.exports = function(context) {
     }
 
     context.dataGate.send("uaf.message", uafClient.context, { appId: client.id, data: message.data });
+  }
+
+  function reloadApp(client, message) {
+    var app = apps[client.id];
+
+    if (!app) {
+      console.error('Application is not registred');
+      throw "appNotRegistred";
+    }
+
+    var code = randomstring.generate(16);
+
+    console.log('Reload code ' + code + ' created for ' + client.id);
+
+    reloadCodes[code] = client;
+    context.dataGate.sendResponse(message, client, { reloadCode: code });
+  }
+
+  function restoreClients(client, message) {
+    var code = message.reloadCode;
+    var oldClient = reloadCodes[code];
+    if (!oldClient) {
+      console.error('Reload code ' + code + ' is not found');
+      throw "cannotReload";
+    }
+
+    var clients = apps[oldClient.id].clients;
+    for (var clientId in clients) {
+      if (!clients.hasOwnProperty(clientId)) continue;
+      var uafClient = clients[clientId].context;
+      context.dataGate.send('uaf.newAppId', uafClient, { oldAppId: oldClient.id, newAppId: client.id });
+    }
+
+    delete reloadCodes[code]
   }
 };
