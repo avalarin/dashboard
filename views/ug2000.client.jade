@@ -1,0 +1,17 @@
+extends ./layouts/main.jade
+
+block vars
+  - var jsPath = "ug2000.client.js"
+
+block title
+  title УГ2000 Client
+
+block head
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+
+block styles
+  link(rel='stylesheet', href='components/bootstrap/dist/css/bootstrap.min.css')
+
+block content
+  .container-fluid
+    h1 УГ2000 Control

@@ -30,6 +30,10 @@ class DashboardClient extends UafClient {
     document.getElementById('reload').addEventListener("click", () => {
       this.sendToApp({ command: 'reloadPage' });
     });
+
+    document.getElementById('goUg2000').addEventListener("click", () => {
+      this.sendToApp({ command: 'goPage', url: 'ug2000.html' });
+    });
   }
 
   onApplicationMessage(data) {

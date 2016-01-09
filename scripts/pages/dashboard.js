@@ -51,6 +51,11 @@ class DashboardApp extends UafApp {
         var newLocation = location.origin + location.pathname + '?reloadCode=' + reloadCode;
         location.href = newLocation;
       });
+    } else if (data.command == 'goPage') {
+      this.requestReloadCode(reloadCode => {
+        var newLocation = location.origin + '/' + data.url + '?reloadCode=' + reloadCode;
+        location.href = newLocation;
+      });
     }
   }
 }
