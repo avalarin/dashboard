@@ -1,12 +1,12 @@
 # dashboard
 
-# Требования
+## Требования
 * cygwin (только под Windows)
 * nodejs, npm
 * gulp-cli
 * bower-cli
 
-# Начало работы
+## Начало работы
 * Инициализация
 ```
 git clone git@github.com:avalarin/dashboard.git
