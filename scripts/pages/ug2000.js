@@ -54,6 +54,9 @@ class UG2000App extends UafApp {
       this.game.startShoting();
     } else if (data.command == 'stopShoting') {
       this.game.stopShoting();
+    } else if (data.command == 'setAngle') {
+      console.log('From client:', data.angle);
+      this.game.setTargetAngle(data.angle);
     }
   }
 }

@@ -8,6 +8,9 @@ class UG2000Client extends UafClient {
   constructor(dataClient, appId) {
     super(dataClient);
     this.appId = appId;
+
+    this.fireControl = document.getElementById('fireControl');
+    this.angleControl = document.getElementById('angleControl');
   }
 
   begin() {
@@ -17,13 +20,61 @@ class UG2000Client extends UafClient {
   onApplicationConnected() {
     console.log('Application connected');
 
-    document.addEventListener("touchstart", () => {
+    this.fireControl.addEventListener("touchstart", (event) => {
+      event.preventDefault();
+      this.fireControl.style.background = 'red';
       this.sendToApp({ command: 'startShoting' });
     });
 
-    document.addEventListener("touchend", () => {
+    this.fireControl.addEventListener("touchend", (event) => {
+      event.preventDefault();
+      this.fireControl.style.background = 'green';
       this.sendToApp({ command: 'stopShoting' });
     });
+
+    this.angleControl.addEventListener("touchstart", (event) => {
+      event.preventDefault();
+      this.angleControl.style.background = 'yellow';
+      this.angleTouch = event.changedTouches[0].identifier;
+    });
+
+    this.angleControl.addEventListener("touchend", (event) => {
+      event.preventDefault();
+      this.angleControl.style.background = 'blue';
+      this.angleTouch = null;
+    });
+
+    this.angleControl.addEventListener("touchmove", (event) => {
+      try {
+        event.preventDefault();
+        var content = 'touchmove ' + event.touches.length + '<br/>';
+        var t = this.getAngleTouch(event);
+        var rect = this.angleControl.getBoundingClientRect();
+        var maxX = rect.width - 20;
+        var x = t.pageX - rect.left + 10;
+        var p = x / maxX;
+        p = Math.max(0, Math.min(p, 1)) - 0.5;
+        var a = 2.6 * p;
+
+        content += 'p:' + (p * 100) + '%<br/>';
+        content += 'a:' + a + '<br/>';
+
+        this.sendToApp({ command: 'setAngle', angle: a });
+        this.angleControl.innerHTML = content;
+      } catch (e) {
+        alert(e);
+      }
+    });
+  }
+
+  getAngleTouch(event) {
+      for (var i = 0; i < event.touches.length; i++) {
+        var t = event.touches[i];
+        if (t.identifier == this.angleTouch) {
+          return t;
+        }
+      }
+      return null;
   }
 
   onApplicationMessage(data) {
