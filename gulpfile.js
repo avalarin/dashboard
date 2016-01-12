@@ -38,6 +38,10 @@ gulp.task('views', function() {
   gulp.src('views/widgets/*.jade')
     .pipe(jade({ pretty: true }))
     .pipe(gulp.dest('public/widgets'));
+
+  gulp.src('views/templates/*.jade')
+    .pipe(jade({ pretty: true }))
+    .pipe(gulp.dest('public/templates'));
 });
 
 gulp.task('components', function() {

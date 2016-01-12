@@ -2,6 +2,7 @@ require.config({
   baseUrl: 'scripts/',
   paths: {
     'jquery': '../components/jquery/dist/jquery.min',
+    'bootstrap': '../components/bootstrap/dist/js/bootstrap.min',
     'knockout': '../components/knockout/dist/knockout',
     'requiretext': '../components/requirejs-text/text',
     'moment': '../components/moment/min/moment.min',

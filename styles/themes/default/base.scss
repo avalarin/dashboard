@@ -5,5 +5,9 @@ html {
 body {
   margin: $page-padding;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 
+body.server-page {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }

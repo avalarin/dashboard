@@ -11,7 +11,8 @@
     "node-schedule": "*",
     "ws": "*",
     "randomstring": "*",
-    "extend": "*"
+    "extend": "*",
+    "jade": "*"
   },
   "devDependencies": {
     "gulp": "*",

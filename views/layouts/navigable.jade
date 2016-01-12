@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    block vars
+    block title
+      title Dashboard
+    block head
+
+    link(rel='stylesheet', href='styles/themes/default.css')
+    link(rel='stylesheet', href='components/bootstrap/dist/css/bootstrap.min.css')
+    block styles
+  body.server-page(data-jspath=jsPath)
+    .container
+      nav.navbar.navbar-default
+        .container-fluid
+          .navbar-header
+            .navbar-brand Dashboard
+      block content
+
+    script(src='components/jquery/dist/jquery.js')
+    script(src='components/requirejs/require.js')
+    script(src='scripts/boot.js')

@@ -12,11 +12,13 @@ var context = require("./context.js")({
 });
 context.loadExtensions();
 
-app.get("/", function (req, res) {
-  res.send("Hello World!");
-});
-
 app.use(express.static("public"));
+app.set('views', './views/server')
+app.set('view engine', 'jade');
+
+app.get('/', function (req, res) {
+  res.render('index');
+});
 
 server.on('request', app);
 server.listen(3000, function () { console.log('Listening on ' + server.address().port) });
