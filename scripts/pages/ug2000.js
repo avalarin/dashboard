@@ -48,6 +48,11 @@ class UG2000App extends UafApp {
     toastr.info('Client ' + clientId + ' connected', 'System');
   }
 
+  onClientDisconnected(clientId) {
+    console.log('Client ' + clientId + ' disconnected');
+    toastr.info('Client ' + clientId + ' disconnected', 'System');
+  }
+
   onClientMessage(clientId, data) {
     console.log('Message from ' + clientId, data);
     if (data.command == 'startShoting') {

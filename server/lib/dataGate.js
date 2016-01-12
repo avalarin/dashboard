@@ -1,6 +1,16 @@
 var randomstring = require("randomstring");
 var extend = require("extend");
 var WebSocket = require('ws');
+var EventEmitter = require('events');
+var util = require('util');
+
+function ClientContext(id, ws) {
+  EventEmitter.call(this);
+  this.id = id;
+  this.ws = ws;
+  this.subscribes = [];
+}
+util.inherits(ClientContext, EventEmitter);
 
 function initializer(context) {
   var wss = context.wss;
@@ -68,11 +78,12 @@ function initializer(context) {
     while (clients[id]) {
       id = randomstring.generate(6);
     }
-    var context = {
-      id: id,
-      ws: ws,
-      subscribes: []
-    };
+    var context = new ClientContext(id, ws);
+
+    ws.on('close', function() {
+      context.emit('disconnected');
+    });
+
     clients[id] = context;
     return context;
   }

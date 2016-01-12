@@ -15,11 +15,17 @@ class UafClient {
         this.dataClient.subscribe("uaf.newAppId", message => {
           this.onNewAppId(message.newAppId);
         });
+
+        this.dataClient.subscribe("uaf.appDisconnected", message => {
+          this.onApplicationDisconnected();
+        });
       }
     });
   }
 
   onApplicationConnected() { }
+
+  onApplicationDisconnected() { }
 
   onApplicationMessage(data) {  }
 

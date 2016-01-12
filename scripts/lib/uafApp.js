@@ -18,6 +18,9 @@ class UafApp {
         this.dataClient.subscribe("uaf.clientConnected", message => {
           this.onClientConnected(message.remoteClientId);
         });
+        this.dataClient.subscribe("uaf.clientDisconnected", message => {
+          this.onClientDisconnected(message.remoteClientId);
+        });
       }
     });
   }
@@ -25,6 +28,8 @@ class UafApp {
   onApplicationRegistred() { }
 
   onClientConnected(clientId) { }
+
+  onClientDisconnected(clientId) { }
 
   onClientMessage(clientId, data) {  }
 

@@ -40,8 +40,8 @@ module.exports = function(context) {
       try {
         func(sender, message);
       } catch(err) {
-        console.error(err);
         context.dataGate.sendResponse(message, sender, { error: err.toString() });
+        console.log(err);
       }
     }
   }
@@ -56,7 +56,7 @@ module.exports = function(context) {
       id: sender.id,
       name: message.name,
       clientPage: message.clientPage,
-      sender: sender,
+      context: sender,
       clients: { }
     };
 
@@ -78,7 +78,7 @@ module.exports = function(context) {
 
     var app = apps[message.appId];
     if (!app) {
-      console.error('Application ' + message.appId + ' is not found');
+      console.error('Application ' + message.appId + ' not found');
       throw "appNotFound";
     }
 
@@ -106,13 +106,13 @@ module.exports = function(context) {
     var client = clients[sender.id];
 
     if (!client) {
-      console.error('Client is not registred');
+      console.error('Client not registred');
       throw "clientNotRegistred";
     }
 
     var app = apps[client.app.id];
     if (!app) {
-      console.error('Application ' + client.app.id + ' is not found');
+      console.error('Application ' + client.app.id + ' not found');
       context.dataGate.sendResponse(message, sender, { error: "appNotFound" });
       return;
     }
@@ -124,14 +124,14 @@ module.exports = function(context) {
     var app = apps[sender.id];
 
     if (!app) {
-      console.error('Application is not registred');
+      console.error('Application not registred');
       throw "appNotRegistred";
     }
 
     var client = app.clients[message.remoteClientId];
 
     if (!client) {
-      console.error('Client ' + message.remoteClientId + ' is not found');
+      console.error('Client ' + message.remoteClientId + ' not found');
       throw "clientNotFound";
     }
 
@@ -142,7 +142,7 @@ module.exports = function(context) {
     var app = apps[sender.id];
 
     if (!app) {
-      console.error('Application is not registred');
+      console.error('Application not registred');
       throw "appNotRegistred";
     }
 
@@ -150,24 +150,31 @@ module.exports = function(context) {
 
     console.log('Reload code ' + code + ' created for ' + app.id);
 
-    reloadCodes[code] = sender;
+    var clientsToRestore = { };
+    Object.keys(app.clients).forEach(function(id) {
+      clientsToRestore[id] = app.clients[id];
+    });
+
+    reloadCodes[code] = {
+      code: code,
+      oldId: app.id,
+      oldApp: app,
+      clients: clientsToRestore
+    };
     context.dataGate.sendResponse(message, sender, { reloadCode: code });
   }
 
   function restoreClients(sender, message) {
-    var code = message.reloadCode;
-    var oldClient = reloadCodes[code];
-    if (!oldClient) {
-      console.error('Reload code ' + code + ' is not found');
+    var code = reloadCodes[message.reloadCode];
+    if (!code) {
+      console.error('Reload code ' + code + '  not found');
       throw "cannotReload";
     }
 
-    var clients = apps[oldClient.id].clients;
-    for (var clientId in clients) {
-      if (!clients.hasOwnProperty(clientId)) continue;
-      var client = clients[clientId].context;
-      context.dataGate.send('uaf.newAppId', client, { oldAppId: oldClient.id, newAppId: sender.id });
-    }
+    Object.keys(code.clients).forEach(function(id) {
+      var client = code.clients[id];
+      context.dataGate.send('uaf.newAppId', client.context, { oldAppId: code.oldId, newAppId: sender.id });
+    });
 
     delete reloadCodes[code]
   }
@@ -176,17 +183,16 @@ module.exports = function(context) {
     var app = apps[id];
 
     if (!app) {
-      console.error('Application is not registred');
-      throw "appNotRegistred";
+      // Already disconnected
+      return;
     }
 
     Object.keys(app.clients).forEach(function(clientId) {
       var client = app.clients[clientId];
-      context.dataGate.send("uaf.disconnected", client.context, { appId: app.id });
+      context.dataGate.send("uaf.appDisconnected", client.context, { appId: app.id });
       delete clients[clientId];
     });
 
-    context.dataGate.send("uaf.disconnected", app.context, { appId: app.id });
     delete apps[id];
 
     console.log('Application ' + id + " disconnected");
@@ -196,16 +202,14 @@ module.exports = function(context) {
     var client = clients[id];
 
     if (!client) {
-      console.error('Client is not registred');
-      throw "clientNotRegistred";
+      // Already disconnected
+      return;
     }
 
-    context.dataGate.send("uaf.disconnected", client.context, { appId: app.id });
-    context.dataGate.send("uaf.disconnected", client.app.context, { appId: app.id, clientId: client.id });
+    context.dataGate.send("uaf.clientDisconnected", client.app.context, { appId: client.app.id, remoteClientId: client.id });
 
     delete client.app.clients[id];
     delete clients[id];
-
     console.log('Client ' + id + " disconnected");
   }
 };
