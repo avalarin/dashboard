@@ -3,3 +3,20 @@ extends ../layouts/navigable.jade
 block vars
 
 block content
+  .row
+    .col-md-6
+      .panel.panel-default
+        .panel-heading Running apps
+        .panel-body
+    .col-md-6
+      .panel.panel-default
+        .panel-heading Available apps
+        ul.list-group
+          li.list-group-item
+            span Dashboard
+            .pull-right
+              a.btn.btn-xs.btn-success(href='/dashboard.html' target='blank') Run
+          li.list-group-item
+            span UG2000
+            .pull-right
+              a.btn.btn-xs.btn-success(href='/ug2000.html' target='blank') Run
