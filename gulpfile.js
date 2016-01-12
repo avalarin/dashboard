@@ -31,7 +31,7 @@ gulp.task('scripts', function() {
 
 
 gulp.task('views', function() {
-  gulp.src('views/*.jade')
+  gulp.src('views/pages/*.jade')
     .pipe(jade({ pretty: true }))
     .pipe(gulp.dest('public/'));
 
