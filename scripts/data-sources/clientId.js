@@ -5,7 +5,7 @@ class ClientIdDataSource extends BaseDataSource {
   constructor(options) {
     super(options);
 
-    this.value = "";
+    this.value = DataClient.default.clientId;
     DataClient.default.connected.subscribe(() => {
       this.value = DataClient.default.clientId;
     });
