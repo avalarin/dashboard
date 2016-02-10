@@ -11,7 +11,9 @@ require.config({
     'chart': '../components/chart.js/chart.min',
     'paper': '../components/paper/dist/paper-full.min',
     'qrcode': '../components/qrcode-js/qrcode',
-    'toastr': '../components/toastr/toastr.min'
+    'toastr': '../components/toastr/toastr.min',
+    'react': '../vendor/react',
+    'react-dom': '../vendor/react-dom'
   }
 });
 

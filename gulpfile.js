@@ -4,6 +4,7 @@ const sass = require('gulp-sass');
 const jade = require('gulp-jade');
 const copy = require('gulp-copy');
 const merge = require('merge-stream');
+const flatten = require('gulp-flatten');
 
 gulp.task('styles', function() {
   gulp.src(['styles/pages/*.scss'])
@@ -18,7 +19,7 @@ gulp.task('styles', function() {
 gulp.task('scripts-es6', function() {
   return gulp.src(['scripts/**/*.js', '!scripts/boot.js'])
     .pipe(babel({
-      presets: ['es2015'],
+      presets: ['react', 'es2015'],
       plugins: ["transform-es2015-modules-amd"]
     }))
     .pipe(gulp.dest('public/scripts'))
@@ -28,7 +29,6 @@ gulp.task('scripts', function() {
   return gulp.src('scripts/boot.js')
     .pipe(gulp.dest('public/scripts'))
 });
-
 
 gulp.task('views', function() {
   gulp.src('views/pages/*.jade')
@@ -45,8 +45,13 @@ gulp.task('views', function() {
 });
 
 gulp.task('components', function() {
-  return gulp.src('components/**/*')
+  gulp.src('components/**/*')
     .pipe(copy('public/'));
+
+  gulp.src(['node_modules/react/dist/react.js',
+            'node_modules/react-dom/dist/react-dom.js'])
+    .pipe(flatten())
+    .pipe(gulp.dest('public/vendor/'));
 });
 
 gulp.task('watch', function() {
