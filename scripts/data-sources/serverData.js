@@ -18,6 +18,10 @@ class ServerDataSource extends BaseDataSource {
   refresh() {
     DataClient.default.send('server.get', { tkey: this.key });
   }
+
+  destroy() {
+    // TODO unsubscribe
+  }
 }
 
 export default ServerDataSource;

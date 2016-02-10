@@ -6,11 +6,17 @@ class DateDataSource extends BaseDataSource {
   constructor(options) {
     super(options);
     this.refresh();
-    setInterval(() => this.refresh(), 1000);
+    this.intervalId = setInterval(() => {
+      this.refresh();
+    }, 1000);
   }
 
   refresh() {
     this.value = new Date();
+  }
+
+  destroy() {
+    clearInterval(this.intervalId);
   }
 }
 

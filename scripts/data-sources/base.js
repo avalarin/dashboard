@@ -17,6 +17,10 @@ class BaseDataSource {
 
   }
 
+  destroy() {
+    
+  }
+
   get changed() {
     return this._changed;
   }
