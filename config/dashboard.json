@@ -1,0 +1,81 @@
+{
+  "pages": [
+    {
+      "title": "Основная",
+      "tiles": [
+        {
+          "size": "1x1",
+          "widget": "connectClient", "widgetParams": { "title": "ID клиента" },
+          "source": "clientId", "sourceParams": {}
+        },
+        {
+          "size": "2x1",
+          "widget": "text", "widgetParams": { "title": "Текст22" },
+          "source": "serverData", "sourceParams": { "key": "page.staticMessage" }
+        },
+        {
+          "size": "1x1",
+          "widget": "date", "widgetParams": { "title": "Дата и время", "format": "DD.MM.YYYY<br/>hh:mm" },
+          "source": "date", "sourceParams": {}
+        },
+        {
+          "size": "2x2",
+          "widget": "chart", "widgetParams": { "title": "Секунды" },
+          "source": "serverData", "sourceParams": { "key": "seconds.data" }
+        },
+
+        {
+          "size": "1x1",
+          "widget": "date", "widgetParams": { "title": "Дата и время", "format": "DD.MM.YYYY<br/>hh:mm" },
+          "source": "date", "sourceParams": {}
+        },
+        {
+          "size": "2x1",
+          "widget": "text", "widgetParams": { "title": "IP", "moreInfo": "from http://ipinfo.io/ip" },
+          "source": "simpleGet", "sourceParams": { "url": "http://ipinfo.io/ip" }
+        },
+        {
+          "size": "1x1",
+          "widget": "date", "widgetParams": { "title": "Дата и время", "format": "DD.MM.YYYY<br/>hh:mm" },
+          "source": "date", "sourceParams": {}
+        },
+
+        {
+          "size": "1x1",
+          "widget": "connectClient", "widgetParams": { "title": "ID клиента" },
+          "source": "clientId", "sourceParams": {}
+        },
+        {
+          "size": "2x1",
+          "widget": "text", "widgetParams": { "title": "Текст" },
+          "source": "serverData", "sourceParams": { "key": "page.staticMessage" }
+        },
+        {
+          "size": "1x1",
+          "widget": "date", "widgetParams": { "title": "Дата и время", "format": "DD.MM.YYYY<br/>hh:mm" },
+          "source": "date", "sourceParams": {}
+        },
+        {
+          "size": "2x2",
+          "widget": "chart", "widgetParams": { "title": "Секунды" },
+          "source": "serverData", "sourceParams": { "key": "seconds.data" }
+        },
+        {
+          "size": "1x1",
+          "widget": "connectClient", "widgetParams": { "title": "ID клиента" },
+          "source": "clientId", "sourceParams": {}
+        },
+        {
+          "size": "2x1",
+          "widget": "text", "widgetParams": { "title": "Текст" },
+          "source": "serverData", "sourceParams": { "key": "page.staticMessage" }
+        },
+        {
+          "size": "1x1",
+          "widget": "date", "widgetParams": { "title": "Дата и время", "format": "DD.MM.YYYY<br/>hh:mm" },
+          "source": "date", "sourceParams": {}
+        }
+      ]
+    }
+  ]
+}
