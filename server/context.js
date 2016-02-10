@@ -1,7 +1,7 @@
 var path = require('path');
 var fs = require('fs');
 var extend = require('extend');
-var schedule = require('node-schedule');
+var CronJob = require('cron').CronJob;
 
 module.exports = function(base) {
   var context = {
@@ -17,12 +17,20 @@ module.exports = function(base) {
   context.dataGate = require("./lib/dataGate.js")(context);
 
   function registerProvider(key, scheduleStr, func) {
+    console.info('Provider ' + key + ' registered');
     context.providers[key] = func;
-
     if (scheduleStr) {
-      schedule.scheduleJob(scheduleStr, function() {
-        context.dataGate.publishData(key, func());
-      });
+      var job = new CronJob({
+        cronTime: scheduleStr,
+        onTick: function() {
+          try {
+            context.dataGate.publishData(key, func());
+          } catch (e) {
+            console.error('Cannot publish data ' + key, e);
+          }
+        },
+        true: false
+      }).start();
     }
   }
 
@@ -36,7 +44,12 @@ module.exports = function(base) {
   function loadExtensions() {
     var extPath = path.join(__dirname, "ext");
     fs.readdirSync(extPath).forEach(function(file) {
-      require(path.join(extPath, file))(context);
+      var extension = require(path.join(extPath, file));
+      if (typeof(extension) !== 'function') {
+        console.error('Cannot initialize extension from ' + file + ': extensions is not a function');
+        return;
+      }
+      extension(context);
     });
   }
 
